@@ -1,9 +1,8 @@
 SHELL := /bin/bash
 
 build:
-	make clean
 	mkdir script.customregex
-	for f in $$(git ls-tree --full-tree --name-only -r HEAD); \
+	for f in $$(cat files.txt); \
 		do cp --parents $$f script.customregex/; \
 		done
 	zip -r script.customregex.zip script.customregex
