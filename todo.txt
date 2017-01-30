@@ -1,0 +1,9 @@
+Settings XML:
+	Custom output regex: [ ]
+Help: [ ]
+Remote control: [ ]
+Multi language support: [ ]
+Symlink support: [ ]
+Save regexes: [ ]
+Progress bar: [ ]
+Show log: [ ]

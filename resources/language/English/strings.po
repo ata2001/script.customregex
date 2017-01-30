@@ -1,0 +1,13 @@
+# Kodi Media Center language file
+# Addon Name: Regex helper
+# Addon id: script.customregex
+msgid ""
+msgstr ""
+
+msgctxt "#30001"
+msgid "General"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Debug mode"
+msgstr ""
