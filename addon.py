@@ -25,6 +25,9 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
         self.setGeometry(830, 590, 11, 4)
         self.dialog = Dialog()
 
+        self.add_controls()
+        self.connect_controls()
+
     def add_controls(self):
         self.add_labels()
         self.add_textboxes()
@@ -241,8 +244,6 @@ Regular.Show.S01.E01.mkv -->
         else:
             return False
 
-window = RenamerDialog("Regex helper")
-window.add_controls()
-window.connect_controls()
+window = RenamerDialog("TV Show renamer")
 window.doModal()
 del window
