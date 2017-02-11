@@ -34,14 +34,14 @@ class Episode(object):
             return '0{}'.format(self.number)
         return object.__getattribute__(self, item)
 
+    def __int__(self):
+        return int(self.number)
+
     def __repr__(self):
         return 'Episode: {} (season {})'.format(self.number, self.file_.season)
 
     def __str__(self):
         return '{} - {}'.format(self.number, self.title)
-
-    def __int__(self):
-        return int(self.number)
 
 
 class File(object):
@@ -169,12 +169,13 @@ class TvRenamr(object):
         # If we sanitise the filename we shall sanitise the regex too
         if user_regex is not None:
             user_regex = self._sanitise_filename(user_regex)
+
         regex = self._build_regex(user_regex, partial=partial)
+        log.debug('Attempting rename with: {}'.format(regex))
+
         matches = re.match(regex, fn)
         if not matches:
             raise errors.UnexpectedFormatException(fn)
-
-        log.debug('Renaming using: %s', regex)
 
         return self._build_credentials(fn, matches)
 
@@ -313,7 +314,7 @@ class TvRenamr(object):
         %e - \d{2} - The episode number.
 
         """
-        series = r"(?P<show_name>[\w\s.',_-]+)"
+        series = r"(?P<show_name>[\w\s\(\).',_-]+)"
         season = r"(?P<season>\d{1,2})"
         episode = r"(?P<episode>\d{2})"
         second_episode = r".E?(?P<episode2>\d{2})*"

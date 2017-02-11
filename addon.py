@@ -15,7 +15,7 @@ from misc import Dialog
 from tvrenamr.cli.core import rename
 
 class RenamerDialog(pyxbmct.AddonDialogWindow):
-    def __init__(self, title="Regex helper"):
+    def __init__(self, title):
         super(RenamerDialog, self).__init__(title)
 
         # Use the old confluence theme, when we're on confluence
@@ -194,6 +194,7 @@ Regular.Show.S01.E01.mkv -->
         # get settings
         self.debug = addon.getSetting('debug')
 
+        # parse data from Edits
         source_path = self.source_edit.getText()
 
         if self.check_if_empty(source_path):
@@ -236,7 +237,12 @@ Regular.Show.S01.E01.mkv -->
                 show_override=None, specials=None, the=False,
                 paths=paths)
 
+        from tvrenamr.logs import log_buffer
         self.dialog.notification("Done", "Check log for more information!")
+
+        # display log
+        self.dialog.textviewer("Log", log_buffer.getvalue())
+        log_buffer.truncate(0)
 
     def check_if_empty(self, string):
         if string == "":

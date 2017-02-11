@@ -1,6 +1,11 @@
 import logging
 import logging.handlers
 import os
+from StringIO import StringIO
+
+# log buffer for Kodi addon
+from StringIO import StringIO
+log_buffer = StringIO()
 
 
 def convert_log_level(level=26):
@@ -74,6 +79,13 @@ def start_logging(filename, log_level, quiet=False):
         # define a Handler with the given level and outputs to the console
         console = logging.StreamHandler()
         console.setLevel(log_level)
+
+        # Handler for Kodi addon
+        global log_buffer
+        kodi_logger = logging.StreamHandler(log_buffer)
+        kodi_logger.setLevel(20)
+        kodi_logger.setFormatter(console_formatter)
+        logging.getLogger().addHandler(kodi_logger)
 
         # set the console format & attach the handler to the root logger with it.
         console.setFormatter(console_formatter)
