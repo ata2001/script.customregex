@@ -1,7 +1,6 @@
 import logging
 import logging.handlers
 import os
-from StringIO import StringIO
 
 # log buffer for Kodi addon
 from StringIO import StringIO
