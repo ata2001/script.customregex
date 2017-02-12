@@ -54,7 +54,7 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
     def add_textboxes(self):
         self.help_textbox = pyxbmct.TextBox()
         self.placeControl(self.help_textbox, 3, 2, rowspan=6, columnspan=2)
-        self.help_textbox.setText("""You should replace the parts of the filename with the following strings:
+        self.help_textbox.setText("""Replace the parts of the filename with the following strings:
 
 The name of the show:          %n
 Season:                                     %s
@@ -65,6 +65,7 @@ Example:
 Regular.Show.S01.E01.mkv -->
 %n.S%s.E%e.mkv
                                      """)
+        self.help_textbox.autoScroll(3000, 4000, 6000)
 
     def add_edits(self):
         self.source_edit = pyxbmct.Edit("Set source path")
