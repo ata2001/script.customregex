@@ -2,7 +2,7 @@
 A Kodi frontend for [ghickman/tvrenamr](https://github.com/ghickman/tvrenamr)
 
 # Screen capture
-![](i.imgur.com/rqtllw2.gif)
+![](http://i.imgur.com/rqtIIw2.gif)
 
 # Instructions
 Build it with `make`
