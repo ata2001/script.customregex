@@ -227,8 +227,7 @@ Regular.Show.S01.E01.mkv -->
                 self.dialog.alert("You must specify a destination path.")
                 return
             use_symlink = self.symlink_radiobutton.isSelected()
-        
-        
+
         regex = self.regex_edit.getText()
 
         if not regex:
