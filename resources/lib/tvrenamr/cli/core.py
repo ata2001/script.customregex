@@ -19,7 +19,8 @@ def rename(config, canonical, debug, dry_run, episode,  # pylint: disable-msg=to
            ignore_filelist, log_file, log_level, name,  # pylint: disable-msg=too-many-arguments
            no_cache, output_format, organise, partial,  # pylint: disable-msg=too-many-arguments
            quiet, recursive, rename_dir, regex, season,  # pylint: disable-msg=too-many-arguments
-           show, show_override, specials, the, paths):  # pylint: disable-msg=too-many-arguments
+           show, show_override, specials, symlink, the,  # pylint: disable-msg=too-many-arguments
+           paths):  # pylint: disable-msg=too-many-arguments
 
     if debug:
         log_level = 10
@@ -29,9 +30,12 @@ def rename(config, canonical, debug, dry_run, episode,  # pylint: disable-msg=to
     if dry_run or debug:
         start_dry_run(logger)
 
+    if not paths:
+        paths = [os.getcwd()]
+
     for current_dir, filename in build_file_list(paths, recursive, ignore_filelist):
         try:
-            tv = TvRenamr(current_dir, debug, dry_run, no_cache)
+            tv = TvRenamr(current_dir, debug, dry_run, symlink, no_cache)
 
             _file = File(**tv.extract_details_from_file(
                 filename,

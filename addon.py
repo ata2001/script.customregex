@@ -235,8 +235,8 @@ Regular.Show.S01.E01.mkv -->
                 output_format=None, organise=True, partial=False,
                 quiet=False, recursive=False, rename_dir=None,
                 regex=regex, season=None, show=None,
-                show_override=None, specials=None, the=False,
-                paths=paths)
+                show_override=None, specials=None, symlink=False,
+                the=False, paths=paths)
 
         from tvrenamr.logs import log_buffer
         self.dialog.notification("Done", "Check log for more information!")
