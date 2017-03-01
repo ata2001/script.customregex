@@ -48,8 +48,8 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
         self.help_label = pyxbmct.Label("Help")
         self.placeControl(self.help_label, 2, 2, columnspan=2)
 
-        self.symlink_label = pyxbmct.Label("Symlink destination")
-        self.placeControl(self.symlink_label, 7, 0, columnspan=2)
+        self.destination_label = pyxbmct.Label("Destination:")
+        self.placeControl(self.destination_label, 7, 0, columnspan=2)
 
     def add_textboxes(self):
         self.help_textbox = pyxbmct.TextBox()
@@ -77,15 +77,18 @@ Regular.Show.S01.E01.mkv -->
         self.files_edit = pyxbmct.Edit("Files to select")
         self.placeControl(self.files_edit, 4, 0, columnspan=2)
 
-        self.symlink_edit = pyxbmct.Edit("Set symlink destination")
-        self.placeControl(self.symlink_edit, 8, 0, columnspan=2)
+        self.destination_edit = pyxbmct.Edit("Set destination")
+        self.placeControl(self.destination_edit, 8, 0, columnspan=2)
 
     def add_radiobuttons(self):
         self.files_radiobutton = pyxbmct.RadioButton("Select all files inside the directory")
         self.placeControl(self.files_radiobutton, 6, 0, columnspan=2)
 
+        self.working_dir_radiobutton = pyxbmct.RadioButton("Stay in working directory")
+        self.placeControl(self.working_dir_radiobutton, 10, 0)
+
         self.symlink_radiobutton = pyxbmct.RadioButton("Use symlinks")
-        self.placeControl(self.symlink_radiobutton, 10, 0, columnspan=2)
+        self.placeControl(self.symlink_radiobutton, 10, 1)
 
     def add_buttons(self):
         self.source_browse_button = pyxbmct.Button("Browse")
@@ -100,11 +103,11 @@ Regular.Show.S01.E01.mkv -->
         self.files_clear_button = pyxbmct.Button("Clear")
         self.placeControl(self.files_clear_button, 5, 1)
 
-        self.symlink_browse_button = pyxbmct.Button("Browse")
-        self.placeControl(self.symlink_browse_button, 9, 0)
+        self.destination_browse_button = pyxbmct.Button("Browse")
+        self.placeControl(self.destination_browse_button, 9, 0)
 
-        self.symlink_clear_button = pyxbmct.Button("Clear")
-        self.placeControl(self.symlink_clear_button, 9, 1)
+        self.destination_clear_button = pyxbmct.Button("Clear")
+        self.placeControl(self.destination_clear_button, 9, 1)
 
         self.help_button = pyxbmct.Button("Help")
         self.placeControl(self.help_button, 9, 2)
@@ -124,10 +127,9 @@ Regular.Show.S01.E01.mkv -->
         self.connect(self.files_browse_button, self.files_browse)
         self.connect(self.files_clear_button, self.files_clear)
         self.connect(self.files_radiobutton, self.files_all)
-        self.connect(self.symlink_browse_button, self.symlink_browse)
-        self.connect(self.symlink_clear_button, self.symlink_clear)
-        self.connect(self.symlink_radiobutton, self.symlink_radiobutton_handler)
-        self.symlink_radiobutton_handler()
+        self.connect(self.destination_browse_button, self.destination_browse)
+        self.connect(self.destination_clear_button, self.destination_clear)
+        self.connect(self.working_dir_radiobutton, self.working_dir_radiobutton_handler)
         self.connect(self.settings_button, addon.openSettings)
         self.connect(self.close_button, self.close)
         self.connect(self.start_button, self.start)
@@ -167,29 +169,26 @@ Regular.Show.S01.E01.mkv -->
             self.files_browse_button.setEnabled(True)
             self.files_clear_button.setEnabled(True)
 
-    def symlink_browse(self):
-        self.symlink_edit.setText(self.dialog.choose_directory("Select symlink target directory"))
+    def destination_browse(self):
+        self.destination_edit.setText(self.dialog.choose_directory("Select target directory"))
 
-    def symlink_clear(self):
-        self.symlink_edit.setText("")
+    def destination_clear(self):
+        self.destination_edit.setText("")
 
-    def symlink_radiobutton_handler(self):
-        use_symlinks = self.symlink_radiobutton.isSelected()
-
-        if use_symlinks:
-            # Not yet implemented
-            self.dialog.ok("Alert", "This feature is not yet implemented.")
-            self.symlink_radiobutton.setSelected(False)
-            self.symlink_radiobutton_handler()
-#            self.symlink_label.setEnabled(True)
-#            self.symlink_edit.setEnabled(True)
-#            self.symlink_browse_button.setEnabled(True)
-#            self.symlink_clear_button.setEnabled(True)
+    def working_dir_radiobutton_handler(self):
+        use_working_dir = self.working_dir_radiobutton.isSelected()
+        if use_working_dir:
+            self.destination_label.setEnabled(False)
+            self.destination_edit.setEnabled(False)
+            self.destination_browse_button.setEnabled(False)
+            self.destination_clear_button.setEnabled(False)
+            self.symlink_radiobutton.setEnabled(False)
         else:
-            self.symlink_label.setEnabled(False)
-            self.symlink_edit.setEnabled(False)
-            self.symlink_browse_button.setEnabled(False)
-            self.symlink_clear_button.setEnabled(False)
+            self.destination_label.setEnabled(True)
+            self.destination_edit.setEnabled(True)
+            self.destination_browse_button.setEnabled(True)
+            self.destination_clear_button.setEnabled(True)
+            self.symlink_radiobutton.setEnabled(True)
 
     def start(self):
         # get settings
@@ -198,7 +197,7 @@ Regular.Show.S01.E01.mkv -->
         # parse data from Edits
         source_path = self.source_edit.getText()
 
-        if self.check_if_empty(source_path):
+        if not source_path:
             self.dialog.alert("You must specify the source directory.")
             return
 
@@ -209,8 +208,8 @@ Regular.Show.S01.E01.mkv -->
         else:
             filenames = self.files_edit.getText()
 
-            if self.check_if_empty(filenames):
-                self.dialog.alert("You should specify, what files to select.")
+            if not filenames:
+                self.dialog.alert("You must specify, what files to select.")
                 return
 
             filenames = filenames.split('; ')
@@ -218,9 +217,21 @@ Regular.Show.S01.E01.mkv -->
                      for filename in filenames]
             paths = tuple(paths)
 
+        stay_in_working_dir = self.working_dir_radiobutton.isSelected()
+        if stay_in_working_dir:
+            destination = None
+            use_symlink = False
+        else:
+            destination = self.destination_edit.getText()
+            if not destination:
+                self.dialog.alert("You must specify a destination path.")
+                return
+            use_symlink = self.symlink_radiobutton.isSelected()
+        
+        
         regex = self.regex_edit.getText()
 
-        if self.check_if_empty(regex):
+        if not regex:
             self.dialog.alert("You must specify a regular expression.")
             return
 
@@ -233,9 +244,9 @@ Regular.Show.S01.E01.mkv -->
                 episode=None, ignore_filelist=(), log_file=None,
                 log_level=None, name=None, no_cache=False,
                 output_format=None, organise=True, partial=False,
-                quiet=False, recursive=False, rename_dir=None,
+                quiet=False, recursive=False, rename_dir=destination,
                 regex=regex, season=None, show=None,
-                show_override=None, specials=None, symlink=False,
+                show_override=None, specials=None, symlink=use_symlink,
                 the=False, paths=paths)
 
         from tvrenamr.logs import log_buffer
@@ -244,12 +255,6 @@ Regular.Show.S01.E01.mkv -->
         # display log
         self.dialog.textviewer("Log", log_buffer.getvalue())
         log_buffer.truncate(0)
-
-    def check_if_empty(self, string):
-        if string == "":
-            return True
-        else:
-            return False
 
 window = RenamerDialog("TV Show renamer")
 window.doModal()
