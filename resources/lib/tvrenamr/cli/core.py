@@ -10,7 +10,6 @@ import sys
 from tvrenamr import __version__, errors
 from tvrenamr.cli.helpers import (build_file_list, get_config, start_dry_run,
                                   stop_dry_run)
-from tvrenamr.logs import start_logging
 from tvrenamr.main import File, TvRenamr
 
 log = logging.getLogger('CLI')
@@ -22,9 +21,6 @@ def rename(config, canonical, debug, dry_run, episode,  # pylint: disable-msg=to
            show, show_override, specials, symlink, the,  # pylint: disable-msg=too-many-arguments
            paths):  # pylint: disable-msg=too-many-arguments
 
-    if debug:
-        log_level = 10
-    start_logging(log_file, log_level, quiet)
     logger = functools.partial(log.log, 26)
 
     if dry_run or debug:

@@ -82,8 +82,8 @@ def start_logging(filename, log_level, quiet=False):
         # Handler for Kodi addon
         global log_buffer
         kodi_logger = logging.StreamHandler(log_buffer)
-        kodi_logger.setLevel(20)
-        kodi_logger.setFormatter(console_formatter)
+        kodi_logger.setLevel(26)
+#        kodi_logger.setFormatter(console_formatter)
         logging.getLogger().addHandler(kodi_logger)
 
         # set the console format & attach the handler to the root logger with it.

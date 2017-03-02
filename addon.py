@@ -28,6 +28,14 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
         self.add_controls()
         self.connect_controls()
 
+        from tvrenamr.logs import start_logging
+        debug = addon.getSetting('debug')
+        if debug:
+            log_level = 10
+        else:
+            log_level = None
+        start_logging(None, log_level, False)
+
     def add_controls(self):
         self.add_labels()
         self.add_textboxes()
