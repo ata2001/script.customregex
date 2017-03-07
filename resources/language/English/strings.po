@@ -1,5 +1,5 @@
 # Kodi Media Center language file
-# Addon Name: Regex helper
+# Addon Name: TV Show renamer
 # Addon id: script.customregex
 msgid ""
 msgstr ""
@@ -9,5 +9,9 @@ msgid "General"
 msgstr ""
 
 msgctxt "#30002"
+msgid "Output format"
+msgstr ""
+
+msgctxt "#30003"
 msgid "Debug mode"
 msgstr ""

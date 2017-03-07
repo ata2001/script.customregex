@@ -13,6 +13,7 @@ sys.path.append(xbmc.translatePath(os.path.join(addon_path, 'resources', 'lib'))
 
 from misc import Dialog
 from tvrenamr.cli.core import rename
+from tvrenamr.logs import start_logging
 
 class RenamerDialog(pyxbmct.AddonDialogWindow):
     def __init__(self, title):
@@ -28,9 +29,8 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
         self.add_controls()
         self.connect_controls()
 
-        from tvrenamr.logs import start_logging
-        debug = addon.getSetting('debug')
-        if debug:
+        self.load_settings()
+        if self.debug:
             log_level = 10
         else:
             log_level = None
@@ -199,8 +199,8 @@ Regular.Show.S01.E01.mkv -->
             self.symlink_radiobutton.setEnabled(True)
 
     def start(self):
-        # get settings
-        self.debug = addon.getSetting('debug')
+        # load settings
+        self.load_settings()
 
         # parse data from Edits
         source_path = self.source_edit.getText()
@@ -242,6 +242,9 @@ Regular.Show.S01.E01.mkv -->
             self.dialog.alert("You must specify a regular expression.")
             return
 
+        output_format = self.output_format.encode("utf8")
+        self.dialog.alert(output_format)
+
         if self.debug == "true":
             debug = True
         else:
@@ -250,7 +253,7 @@ Regular.Show.S01.E01.mkv -->
         rename(config=None, canonical=None, debug=debug, dry_run=False,
                 episode=None, ignore_filelist=(), log_file=None,
                 log_level=None, name=None, no_cache=False,
-                output_format=None, organise=True, partial=False,
+                output_format=output_format, organise=True, partial=False,
                 quiet=False, recursive=False, rename_dir=destination,
                 regex=regex, season=None, show=None,
                 show_override=None, specials=None, symlink=use_symlink,
@@ -263,6 +266,12 @@ Regular.Show.S01.E01.mkv -->
         self.dialog.textviewer("Log", log_buffer.getvalue())
         log_buffer.truncate(0)
 
-window = RenamerDialog("TV Show renamer")
-window.doModal()
-del window
+    def load_settings(self):
+        self.output_format = addon.getSetting('output_format')
+        self.debug = addon.getSetting('debug')
+
+
+if __name__ == "__main__":
+    window = RenamerDialog("TV Show renamer")
+    window.doModal()
+    del window
