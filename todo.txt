@@ -1,5 +1,5 @@
 Settings XML:
-	Custom output regex: [ ]
+	Custom output regex: [x]
 Help: [ ]
 Remote control: [ ]
 Multi language support: [ ]
