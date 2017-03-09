@@ -190,13 +190,11 @@ Regular.Show.S01.E01.mkv -->
             self.destination_edit.setEnabled(False)
             self.destination_browse_button.setEnabled(False)
             self.destination_clear_button.setEnabled(False)
-            self.symlink_radiobutton.setEnabled(False)
         else:
             self.destination_label.setEnabled(True)
             self.destination_edit.setEnabled(True)
             self.destination_browse_button.setEnabled(True)
             self.destination_clear_button.setEnabled(True)
-            self.symlink_radiobutton.setEnabled(True)
 
     def start(self):
         # load settings
@@ -228,13 +226,13 @@ Regular.Show.S01.E01.mkv -->
         stay_in_working_dir = self.working_dir_radiobutton.isSelected()
         if stay_in_working_dir:
             destination = None
-            use_symlink = False
         else:
             destination = self.destination_edit.getText()
             if not destination:
                 self.dialog.alert("You must specify a destination path.")
                 return
-            use_symlink = self.symlink_radiobutton.isSelected()
+        
+        use_symlink = self.symlink_radiobutton.isSelected()
 
         regex = self.regex_edit.getText()
 
