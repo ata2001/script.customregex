@@ -231,7 +231,7 @@ Regular.Show.S01.E01.mkv -->
             if not destination:
                 self.dialog.alert("You must specify a destination path.")
                 return
-        
+
         use_symlink = self.symlink_radiobutton.isSelected()
 
         regex = self.regex_edit.getText()
@@ -241,7 +241,6 @@ Regular.Show.S01.E01.mkv -->
             return
 
         output_format = self.output_format.encode("utf8")
-        self.dialog.alert(output_format)
 
         if self.debug == "true":
             debug = True
