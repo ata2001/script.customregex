@@ -240,21 +240,16 @@ Regular.Show.S01.E01.mkv -->
             self.dialog.alert("You must specify a regular expression.")
             return
 
-        output_format = self.output_format.encode("utf8")
-
-        if self.debug == "true":
-            debug = True
-        else:
-            debug = False
-
-        rename(config=None, canonical=None, debug=debug, dry_run=False,
-                episode=None, ignore_filelist=(), log_file=None,
-                log_level=None, name=None, no_cache=False,
-                output_format=output_format, organise=True, partial=False,
-                quiet=False, recursive=False, rename_dir=destination,
+        rename(config=None, canonical=None, debug=self.debug,
+                dry_run=self.dry_run, episode=None,
+                ignore_filelist=(), log_file=None, log_level=None,
+                name=None, no_cache=False,
+                output_format=self.output_format,
+                organise=self.organise, partial=self.partial,
+                quiet=False, recursive=self.recursive, rename_dir=destination,
                 regex=regex, season=None, show=None,
                 show_override=None, specials=None, symlink=use_symlink,
-                the=False, paths=paths)
+                the=self.the, paths=paths)
 
         from tvrenamr.logs import log_buffer
         self.dialog.notification("Done", "Check log for more information!")
@@ -265,7 +260,19 @@ Regular.Show.S01.E01.mkv -->
 
     def load_settings(self):
         self.output_format = addon.getSetting('output_format')
+        self.output_format = self.output_format.encode('utf8')
+        self.organise = addon.getSetting('organise')
+        self.organise = self.organise == 'true'
+        self.partial = addon.getSetting('partial')
+        self.partial = self.partial == 'true'
+        self.recursive = addon.getSetting('recursive')
+        self.recursive = self.recursive == 'true'
+        self.the = addon.getSetting('the')
+        self.the = self.the == 'true'
+        self.dry_run = addon.getSetting('dry_run')
+        self.dry_run = self.dry_run == 'true'
         self.debug = addon.getSetting('debug')
+        self.debug = self.debug == 'true'
 
 
 if __name__ == "__main__":

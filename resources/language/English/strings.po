@@ -13,5 +13,25 @@ msgid "Output format"
 msgstr ""
 
 msgctxt "#30003"
+msgid "Organise renamed files"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Partial regex matching"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Recursive"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Move 'The' to the end of the filename"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Dry run"
+msgstr ""
+
+msgctxt "#30008"
 msgid "Debug mode"
 msgstr ""
