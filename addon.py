@@ -28,6 +28,7 @@ class RenamerDialog(pyxbmct.AddonDialogWindow):
 
         self.add_controls()
         self.connect_controls()
+        self.set_navigation()
 
         self.load_settings()
         if self.debug:
@@ -141,6 +142,75 @@ Regular.Show.S01.E01.mkv -->
         self.connect(self.settings_button, addon.openSettings)
         self.connect(self.close_button, self.close)
         self.connect(self.start_button, self.start)
+
+    def set_navigation(self):
+        """Set navigations for remote control."""
+        self.source_edit.controlDown(self.source_browse_button)
+        self.source_edit.controlRight(self.regex_edit)
+
+        self.source_browse_button.controlDown(self.files_edit)
+        self.source_browse_button.controlUp(self.source_edit)
+        self.source_browse_button.controlLeft(self.source_clear_button)
+        self.source_browse_button.controlRight(self.source_clear_button)
+
+        self.source_clear_button.controlDown(self.files_edit)
+        self.source_clear_button.controlUp(self.source_edit)
+        self.source_clear_button.controlLeft(self.source_browse_button)
+
+        self.files_edit.controlDown(self.files_browse_button)
+        self.files_edit.controlUp(self.source_clear_button)
+
+        self.files_browse_button.controlDown(self.files_radiobutton)
+        self.files_browse_button.controlUp(self.files_edit)
+        self.files_browse_button.controlRight(self.files_clear_button)
+
+        self.files_clear_button.controlDown(self.files_radiobutton)
+        self.files_clear_button.controlUp(self.files_edit)
+        self.files_clear_button.controlLeft(self.files_browse_button)
+
+        self.files_radiobutton.controlDown(self.destination_edit)
+        self.files_radiobutton.controlUp(self.files_clear_button)
+
+        self.destination_edit.controlDown(self.destination_browse_button)
+        self.destination_edit.controlUp(self.files_radiobutton)
+
+        self.destination_browse_button.controlDown(self.working_dir_radiobutton)
+        self.destination_browse_button.controlUp(self.destination_edit)
+        self.destination_browse_button.controlRight(self.destination_clear_button)
+
+        self.destination_clear_button.controlDown(self.symlink_radiobutton)
+        self.destination_clear_button.controlUp(self.destination_edit)
+        self.destination_clear_button.controlLeft(self.destination_browse_button)
+        self.destination_clear_button.controlRight(self.help_button)
+
+        self.working_dir_radiobutton.controlUp(self.destination_browse_button)
+        self.working_dir_radiobutton.controlRight(self.symlink_radiobutton)
+
+        self.symlink_radiobutton.controlUp(self.destination_clear_button)
+        self.symlink_radiobutton.controlLeft(self.working_dir_radiobutton)
+        self.symlink_radiobutton.controlRight(self.close_button)
+
+        self.regex_edit.controlDown(self.help_button)
+        self.regex_edit.controlLeft(self.source_edit)
+
+        self.help_button.controlDown(self.close_button)
+        self.help_button.controlUp(self.regex_edit)
+        self.help_button.controlLeft(self.destination_clear_button)
+        self.help_button.controlRight(self.settings_button)
+
+        self.settings_button.controlDown(self.start_button)
+        self.settings_button.controlUp(self.regex_edit)
+        self.settings_button.controlLeft(self.help_button)
+
+        self.close_button.controlUp(self.help_button)
+        self.close_button.controlLeft(self.symlink_radiobutton)
+        self.close_button.controlRight(self.start_button)
+
+        self.start_button.controlUp(self.settings_button)
+        self.start_button.controlLeft(self.close_button)
+
+        #set initial focus
+        self.setFocus(self.source_edit)
 
     def source_browse(self):
         self.source_edit.setText(self.dialog.choose_directory("Select source directory"))
