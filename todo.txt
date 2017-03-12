@@ -1,7 +1,7 @@
 Settings XML:
 	Custom output regex: [x]
 Help: [ ]
-Remote control: [ ]
+Remote control: [x]
 Multi language support: [ ]
 Symlink support: [x]
 Save regexes: [ ]
